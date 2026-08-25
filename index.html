@@ -30,9 +30,9 @@
 
     /* 上部のスタート/ストップボタン */
     #startStopBtn {
-      width: 100%;
-      padding: 20px;
-      font-size: 26px;
+      width: 80%;
+      padding: 60px;
+      font-size: 60px;
       border-radius: 12px;
       border: none;
       background-color: #ff9800;
@@ -48,6 +48,7 @@
     .bottom-btn {
       width: 100%;
       padding: 18px;
+      margin-top: 100px;
       margin: 10px 0;
       font-size: 22px;
       border-radius: 10px;
@@ -57,12 +58,16 @@
       cursor: pointer;
     }
 
+    #bottomArea {
+      margin-top: 600px;   /* ← ここで下部ボタン全体を下に移動 */
+    }
+
     .bottom-btn:hover {
       background-color: #45a049;
     }
 
-    #result {
-      font-size: 60px;
+    #result { /* 出力される数字 */
+      font-size: 200px;
       margin-top: 30px;
       font-weight: bold;
       min-height: 80px;
@@ -104,9 +109,11 @@
   <div id="result"></div>
 
   <!-- 下部：設定・リセット・履歴 -->
-  <button onclick="startSetting()" class="bottom-btn">設定を反映</button>
-  <button onclick="resetNumbers()" class="bottom-btn">リセット</button>
-  <button onclick="showHistory()" class="bottom-btn">履歴を表示</button>
+  <div id="bottomArea">
+    <button onclick="startSetting()" class="bottom-btn">設定を反映</button>
+    <button onclick="resetNumbers()" class="bottom-btn">リセット</button>
+    <button onclick="showHistory()" class="bottom-btn">履歴を表示</button>
+  </div>
 
   <div id="history"></div>
 
