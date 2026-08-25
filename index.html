@@ -28,7 +28,24 @@
       margin: 10px;
     }
 
-    button {
+    /* 上部のスタート/ストップボタン */
+    #startStopBtn {
+      width: 100%;
+      padding: 20px;
+      font-size: 26px;
+      border-radius: 12px;
+      border: none;
+      background-color: #ff9800;
+      color: white;
+      margin: 20px 0;
+    }
+
+    #startStopBtn:hover {
+      background-color: #e68900;
+    }
+
+    /* 下部の操作ボタン */
+    .bottom-btn {
       width: 100%;
       padding: 18px;
       margin: 10px 0;
@@ -40,7 +57,7 @@
       cursor: pointer;
     }
 
-    button:hover {
+    .bottom-btn:hover {
       background-color: #45a049;
     }
 
@@ -61,6 +78,17 @@
       60% { transform: scale(1.2); opacity: 1; }
       100% { transform: scale(1); }
     }
+
+    /* 履歴表示 */
+    #history {
+      margin-top: 30px;
+      font-size: 20px;
+      text-align: left;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      min-height: 50px;
+    }
   </style>
 </head>
 
@@ -70,20 +98,32 @@
   <label>最小値: <input type="number" id="min" value="1"></label><br>
   <label>最大値: <input type="number" id="max" value="20"></label><br><br>
 
-  <button onclick="start()">設定を反映</button>
-  <button onclick="showRandom()">ランダム数字を表示</button>
-  <button onclick="resetNumbers()">リセット</button>
+  <!-- 上部：スタート/ストップ -->
+  <button onclick="toggleStartStop()" id="startStopBtn">スタート</button>
 
   <div id="result"></div>
 
+  <!-- 下部：設定・リセット・履歴 -->
+  <button onclick="startSetting()" class="bottom-btn">設定を反映</button>
+  <button onclick="resetNumbers()" class="bottom-btn">リセット</button>
+  <button onclick="showHistory()" class="bottom-btn">履歴を表示</button>
+
+  <div id="history"></div>
+
   <script>
     let numbers = [];
+    let historyList = [];
+    let intervalId = null;
+    let isRunning = false;
 
-    function start() {
+    function startSetting() {
       const min = Number(document.getElementById("min").value);
       const max = Number(document.getElementById("max").value);
 
       numbers = [];
+      historyList = [];
+      document.getElementById("history").textContent = "";
+
       for (let i = min; i <= max; i++) {
         numbers.push(i);
       }
@@ -91,29 +131,51 @@
       showMessage("設定しました");
     }
 
-    function showRandom() {
-      if (numbers.length === 0) {
-        showMessage("すべての数字が出ました");
-        return;
+    function toggleStartStop() {
+      const btn = document.getElementById("startStopBtn");
+
+      if (!isRunning) {
+        if (numbers.length === 0) {
+          showMessage("数字がありません");
+          return;
+        }
+
+        isRunning = true;
+        btn.textContent = "ストップ";
+
+        intervalId = setInterval(() => {
+          const index = Math.floor(Math.random() * numbers.length);
+          const value = numbers[index];
+          showNumber(value);
+        }, 80);
+
+      } else {
+        clearInterval(intervalId);
+        isRunning = false;
+        btn.textContent = "スタート";
+
+        const current = Number(document.getElementById("result").textContent);
+
+        const idx = numbers.indexOf(current);
+        if (idx !== -1) numbers.splice(idx, 1);
+
+        historyList.push(current);
+        showNumber(current);
       }
-
-      const index = Math.floor(Math.random() * numbers.length);
-      const value = numbers[index];
-
-      numbers.splice(index, 1);
-
-      const result = document.getElementById("result");
-      result.textContent = value;
-
-      // アニメーション付与
-      result.classList.remove("pop");
-      void result.offsetWidth; // 強制再描画（アニメーションを毎回発火させるため）
-      result.classList.add("pop");
     }
 
     function resetNumbers() {
-      start();
+      startSetting();
       showMessage("リセットしました");
+    }
+
+    function showNumber(num) {
+      const result = document.getElementById("result");
+      result.textContent = num;
+
+      result.classList.remove("pop");
+      void result.offsetWidth;
+      result.classList.add("pop");
     }
 
     function showMessage(msg) {
@@ -123,6 +185,17 @@
       result.classList.remove("pop");
       void result.offsetWidth;
       result.classList.add("pop");
+    }
+
+    function showHistory() {
+      const historyDiv = document.getElementById("history");
+
+      if (historyList.length === 0) {
+        historyDiv.textContent = "まだ数字が出ていません";
+        return;
+      }
+
+      historyDiv.textContent = "出た数字: " + historyList.join(", ");
     }
   </script>
 </body>
