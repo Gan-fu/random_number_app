@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ランダム数字表示</title>
+</head>
+<body>
+  <h2>ランダム数字表示</h2>
+
+  <label>最小値: <input type="number" id="min" value="1"></label><br>
+  <label>最大値: <input type="number" id="max" value="20"></label><br><br>
+
+  <button onclick="start()">設定を反映</button>
+  <button onclick="showRandom()">ランダム数字を表示</button>
+  <button onclick="resetNumbers()">リセット</button>
+
+  <h3 id="result"></h3>
+
+  <script>
+    let numbers = [];  // まだ出ていない数字のリスト
+
+    function start() {
+      const min = Number(document.getElementById("min").value);
+      const max = Number(document.getElementById("max").value);
+
+      numbers = [];
+      for (let i = min; i <= max; i++) {
+        numbers.push(i);
+      }
+
+      document.getElementById("result").textContent = "設定しました。";
+    }
+
+    function showRandom() {
+      if (numbers.length === 0) {
+        document.getElementById("result").textContent = "すべての数字が出ました。リセットしてください。";
+        return;
+      }
+
+      const index = Math.floor(Math.random() * numbers.length);
+      const value = numbers[index];
+
+      numbers.splice(index, 1); // 一度出た数字を削除
+
+      document.getElementById("result").textContent = value;
+    }
+
+    function resetNumbers() {
+      start();
+      document.getElementById("result").textContent = "リセットしました。";
+    }
+  </script>
+</body>
+</html>
