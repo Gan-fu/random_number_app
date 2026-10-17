@@ -121,7 +121,10 @@
   <div id="bottomArea">
     <button onclick="startSetting()" class="bottom-btn">設定を反映</button>
     <button onclick="resetNumbers()" class="bottom-btn">リセット</button>
+    <label>除外する数字（カンマ区切り）: <input type="text" id="excludeNum"></label>
+    <button onclick="excludeNumber()" class="bottom-btn">除外を反映</button>
     <button onclick="showHistory()" class="bottom-btn">履歴を表示</button>
+    <button onclick="showRemaining()" class="bottom-btn">残りの数字を表示</button>
   </div>
 
   <div id="history"></div>
@@ -213,6 +216,44 @@
       }
 
       historyDiv.textContent = "出た数字: " + historyList.join(", ");
+    }
+
+    function excludeNumber() {
+      const input = document.getElementById("excludeNum").value;
+
+      if (!input) {
+        showMessage("数字が入力されていません");
+        return;
+      }
+
+      // カンマ区切りで複数の数字を取得
+      const excludeValues = input.split(",").map(v => Number(v.trim()));
+
+      let removed = [];
+
+      excludeValues.forEach(val => {
+        if (numbers.includes(val)) {
+          numbers = numbers.filter(n => n !== val);
+          removed.push(val);
+        }
+      });
+
+      if (removed.length > 0) {
+        showMessage(`数字 ${removed.join(", ")} を除外しました`);
+      } else {
+        showMessage("除外できる数字がありませんでした");
+      }
+    }
+
+    function showRemaining() {
+      const historyDiv = document.getElementById("history");
+
+      if (numbers.length === 0) {
+        historyDiv.textContent = "残りの数字はありません（すべて出ました）";
+        return;
+      }
+
+      historyDiv.textContent = "残りの数字: " + numbers.join(", ");
     }
   </script>
 </body>
