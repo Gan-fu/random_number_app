@@ -118,6 +118,16 @@
       border-radius: 10px;
       min-height: 50px;
     }
+
+    #cancelBtn {
+      background-color: #f44336; /* 赤系 */
+      color: white;
+    }
+
+    #cancelBtn:hover {
+      background-color: #d32f2f;
+    }
+
   </style>
 </head>
 
@@ -138,7 +148,7 @@
     <button onclick="startSetting()" class="bottom-btn">設定を反映</button>
     <button onclick="resetNumbers()" class="bottom-btn">リセット</button>
 
-    <button onclick="cancelRandom()" class="bottom-btn">抽選を中止する</button>
+    <button onclick="cancelRandom()" class="bottom-btn" id="cancelBtn">抽選を中止する</button>
     
     <label>除外する数字（カンマ区切り）: <input type="text" id="excludeNum"></label>
     <button onclick="excludeNumber()" class="bottom-btn">除外を反映</button>
