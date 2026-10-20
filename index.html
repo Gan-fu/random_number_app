@@ -76,7 +76,7 @@
     }
 
     #bottomArea {
-      margin-top: 2000px;   /* ← ここで下部ボタン全体を下に移動 */
+        margin-top: 40px;  
     }
 
     .bottom-btn:hover {
@@ -92,10 +92,10 @@
 
     #message {
       font-size: 20px;
-      margin-top: 10px;
+      margin-top: 1800px;
       color: #555;
+      text-align: center;
     }
-
 
     /* 数字が出るときのアニメーション */
     .pop {
@@ -133,11 +133,12 @@
   
   <!-- 下部：設定・リセット・履歴 -->
   <div id="bottomArea">
-    <div id="bottomArea">
     <label>最小値: <input type="number" id="min" value="1"></label><br>
     <label>最大値: <input type="number" id="max" value="20"></label><br><br>
     <button onclick="startSetting()" class="bottom-btn">設定を反映</button>
     <button onclick="resetNumbers()" class="bottom-btn">リセット</button>
+
+    <button onclick="cancelRandom()" class="bottom-btn">抽選を中止する</button>
     
     <label>除外する数字（カンマ区切り）: <input type="text" id="excludeNum"></label>
     <button onclick="excludeNumber()" class="bottom-btn">除外を反映</button>
@@ -277,6 +278,22 @@
 
       historyDiv.textContent = "残りの数字: " + numbers.join(", ");
     }
+    
+    function cancelRandom() {
+      if (!isRunning) {
+        showMessage("抽選は開始されていません");
+        return;
+      }
+
+      clearInterval(intervalId);
+      isRunning = false;
+
+      const btn = document.getElementById("startStopBtn");
+      btn.textContent = "スタート";
+
+      showMessage("抽選を中止しました（数字は確定されません）");
+    }
+
   </script>
 </body>
 </html>
